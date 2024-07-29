@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beyond Currency</title>
+    <link rel="icon" type="image/png" href="/img/logo.png" />
+
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/media.css" />
+    <!--  for header-->
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <!--  for header-->
+    <link rel="stylesheet" href="/css/post_completed.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="header__left">
+        <a th:href="@{/}" class="logo__link"><img class="header__img" src="/img/logo.png" alt="logo" /></a>
+        <p class="header__title">Beyond Currency</p>
+      </div>
+
+      <div class="header__right">
+        <div class="header__searchbar">
+          <form action="" method="get">
+            <img class="header__searchbar-icon" src="/svg/search.svg" />
+            <input type="text" name="keyword" placeholder="Search" />
+          </form>
+        </div>
+        <div class="header__notification">
+          <div class="notifi-dot"></div>
+          <div class="icon-bell">
+            <img class="icon-bell-image" id="bell" src="/img/bell.png" alt="">
+          </div>
+          <input class="hidden" type="checkbox" name="isNewNotification" th:value="${isNewNotification}">
+          <input class="hidden" type="number" name="loginUserId" th:value="${session.loginUser.getUserId()}">
+          <ul class="notifi-box" id="box">
+            <li class="notifi-item" th:each="n : ${relatedNotifications}">
+              <img class="notifi-photo" th:src="${n.getSenderImg()}" src="/img/photo-1592334873219-42ca023e48ce.avif" alt="">
+              <a th:href="@{/post/{id}(id=${n.getServiceId()})}" style="cursor: pointer"><p th:text="${n.getContent()}">James applied to your job "Seeking Assistance for House Painting Project".</p></a>
+              <input class="hidden" type="number" name="notification_id" th:value="${n.getNotificationId()}">
+              <div class="close-notification">
+                <img class="notifi-close" src="/svg/close-black.svg" alt="">
+              </div>
+            </li>
+          </ul>
+        </div>
+        <a class="header__savedTalent" th:href="@{/talent}"
+          ><img
+            class="header__savedTalent-icon"
+            src="/svg/savedTalent.svg"
+        /></a>
+        <a class="header__protfolio" th:href="@{/dashboard}"
+          ><img class="header__protfolio-icon" src="/svg/protfolio.svg" th:src="${session.loginUser.getImageUrl()}"
+        /></a>
+      </div>
+    </header>
+    <main>
+      <div class="main__container-request">
+        <div class="request__container-left">
+          <p class="request__container-left postedby">Posted by</p>
+          <div style="display: flex;">
+            <div class="request__container-left picgroup">
+              <div class="request__container-left picgroup__greendot"></div>
+              <img src="/img/man.jpg" th:src="${poster.getImageUrl()}"  class="request__container-left picgroup__pic" alt="">
+            </div>
+            <div class="request__section-title title__nameGroup">
+              <p class="request__section-title title__nameGroup-name" th:text="${poster.getFirstName() + ' ' + poster.getLastName()}">Matteo Grasso</p>
+              <div class="request__section-title title__addressGroup"><img src="/img/location.png" alt=""><p>Vancouver, BC V6Z 3G8</p></div>
+              <div class="request__section-title title__rateGroup">
+                <div class="request__section-title title__rateGroup-score">
+                  <img src="/img/checkmark.png" alt="">
+                  <p th:text="${poster.getTrustScore() + ' Trust Score'}">96 Trust Score</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="request__section-skill-rate">
+            <div class="skill">
+              <p>Skills for exchange</p>
+              <ul>
+                <li th:text="${post.getExchangeService()}">Mounting</li>
+              </ul>
+            </div>
+            <div class="rate">
+              <p class="rate__feedback">Job feedback</p>
+              <ul>
+                <li th:each="i : ${#numbers.sequence(1, (post.getRateToTaker() != 0 ? post.getRateToTaker() : 0))}" th:class="${post.getRateToTaker() == 0 ? 'hidden' : ''}">
+                  <img class="expert__section-history-li-star" src="/img/star.png" alt="">
+                </li>
+                <p class="expert__section-history-li-starCount" th:text="${post.getRateToTaker() != 0 ? post.getRateToTaker() : ''}" th:class="${post.getRateToTaker() == 0 ? 'hidden' : 'expert__section-history-li-starCount'}"></p>
+              </ul>
+              <p class="expert__section-history-li-comments" th:text="${post.getCommentToTaker() != null ? post.getCommentToTaker() : ''}" th:class="${post.getCommentToTaker() == null ? 'hidden' : 'expert__section-history-li-comments'}"></p>
+            </div>
+          </div>
+
+          <p class="request__container-left postedby" style="margin-top: 60px;">Taking by</p>
+          <div style="display: flex;">
+            <div class="request__container-left picgroup">
+              <div class="request__container-left picgroup__greendot"></div>
+              <img src="/img/photo-1592334873219-42ca023e48ce.avif" th:src="${taker.getImageUrl()}" class="request__container-left picgroup__pic" alt="">
+            </div>
+            <div class="request__section-title title__nameGroup">
+              <p class="request__section-title title__nameGroup-name" th:text="${taker.getFirstName() + ' ' + taker.getLastName()}">James</p>
+              <div class="request__section-title title__addressGroup"><img src="/img/location.png" alt=""><p>Vancouver, BC V6Z 3G8</p></div>
+              <div class="request__section-title title__rateGroup">
+                <div class="request__section-title title__rateGroup-score">
+                  <img src="/img/checkmark.png" alt="">
+                  <p th:text="${taker.getTrustScore() + ' Trust Score'}">96 Trust Score</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="rate-taker">
+            <p class="rate__feedback" style="margin-top: 40px;">Feedback to the poster</p>
+            <ul>
+              <li th:each="i : ${#numbers.sequence(1, (post.getRateToPoster() != 0 ? post.getRateToPoster() : 0))}" th:class="${post.getRateToPoster() == 0 ? 'hidden' : ''}">
+                <img class="expert__section-history-li-star" src="/img/star.png" alt="">
+              </li>
+              <p class="expert__section-history-li-starCount" th:text="${post.getRateToPoster() != 0 ? post.getRateToPoster() : ''}" th:class="${post.getRateToPoster() == 0 ? 'hidden' : 'expert__section-history-li-starCount'}"></p>
+            </ul>
+            <p class="expert__section-history-li-comments" th:text="${post.getCommentToPoster() != null ? post.getCommentToPoster() : ''}" th:class="${post.getCommentToPoster() == null ? 'hidden' : 'expert__section-history-li-comments'}"></p>
+          </div>
+        </div>
+        <div class="request__container-right"> 
+          <div class="top__container">
+            <div class="top__container-left">
+              <p class="top__container-left-request">REQUEST</p>
+              <p class="top__container-left-date" th:text="${'Offers will be considered until ' + post.getDeadlineStr()}">Offers will be considered until March 2, 2025.</p>
+            </div>
+            
+          </div>
+          <p class="request__title" th:text="${post.getServiceTitle()}">Seeking Assistance for House Painting Project</p>
+          <img class="request__pic" th:src="${post.getImageUrl()}" src="/img/Painting.webp" alt="">
+          <ul th:each="p : ${paragraphList}">
+            <li>
+              <p class="request__content" th:text="${p}"></p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer__display__area">
+          <div class="footer__follow__link">Follow us on: 
+            <a href=""><i class="fa fa-instagram"></i></a>
+            <i>|</i>
+            <a href=""><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+            <i>|</i>
+            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+          </div>
+          <div class="footer__info">
+            <div class="footer__info__discover">Discover
+              <ul>
+                <li><a href="">Become a Tasker</a></li>
+                <li><a href="">Service By City</a></li>
+                <li><a href="">All Services</a></li>
+                <li><a href="">Elite Taskers</a></li>
+                <li><a href="">Help</a></li>
+              </ul>
+            </div>
+            <div class="footer__info__company">Company
+              <ul>
+                <li><a href="">About Us</a></li>
+                <li><a href="">Careers</a></li>
+                <li><a href="">Press</a></li>
+                <li><a href="">Beyond Currency for Good</a></li>
+                <li><a href="">Blog</a></li>
+                <li><a href="">Terms & Privacy</a></li>
+                <li><a href="">About Our Ads</a></li>
+              </ul>
+            </div>
+            <div class="footer__info__download">Apps coming soon
+              <p>Sorry for your inconvenience, our apps<br>are developing.</p>
+              <div class="ios__google__badge">
+                <a href="">
+                  <img src="/svg/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="">
+                </a>
+                <a href="">
+                  <img id="google__badge" src="/img/google-play-badge.png" alt="">
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="/js/post_completed.js">
+    </script>
+  </body>
+</html>

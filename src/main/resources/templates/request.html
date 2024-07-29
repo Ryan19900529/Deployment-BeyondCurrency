@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beyond Currency</title>
+    <link rel="icon" type="image/png" href="/img/logo.png" />
+
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/media.css" />
+    <!--  for header-->
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <!--  for header-->
+    <link rel="stylesheet" href="/css/request.css" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+
+  <body>
+  <header class="header">
+    <div class="header__left">
+      <a th:href="@{/}" class="logo__link"><img class="header__img" src="/img/logo.png" alt="logo" /></a>
+      <p class="header__title">Beyond Currency</p>
+    </div>
+
+    <div class="header__right">
+      <div class="header__searchbar">
+        <form action="" method="get">
+          <img class="header__searchbar-icon" src="/svg/search.svg" />
+          <input type="text" name="keyword" placeholder="Search" />
+        </form>
+      </div>
+      <div class="header__notification">
+        <div class="notifi-dot"></div>
+        <div class="icon-bell">
+          <img class="icon-bell-image" id="bell" src="/img/bell.png" alt="">
+        </div>
+        <input class="hidden" type="checkbox" name="isNewNotification" th:value="${isNewNotification}">
+        <input class="hidden" type="number" name="loginUserId" th:value="${session.loginUser.getUserId()}">
+        <ul class="notifi-box" id="box">
+          <li class="notifi-item" th:each="n : ${relatedNotifications}">
+            <img class="notifi-photo" th:src="${n.getSenderImg()}" src="/img/photo-1592334873219-42ca023e48ce.avif" alt="">
+            <a th:href="@{/post/{id}(id=${n.getServiceId()})}" style="cursor: pointer"><p th:text="${n.getContent()}">James applied to your job "Seeking Assistance for House Painting Project".</p></a>
+            <input class="hidden" type="number" name="notification_id" th:value="${n.getNotificationId()}">
+            <div class="close-notification">
+              <img class="notifi-close" src="/svg/close-black.svg" alt="">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <a class="header__savedTalent" th:href="@{/talent}"
+      ><img
+              class="header__savedTalent-icon"
+              src="/svg/savedTalent.svg"
+      /></a>
+      <a class="header__protfolio" th:href="@{/dashboard}"
+      ><img class="header__protfolio-icon" src="/svg/protfolio.svg" th:src="${session.loginUser.getImageUrl()}"
+      /></a>
+    </div>
+  </header>
+    
+    <main>
+      <div class="request__route" th:text="${path}">
+        Painting -> Indoor Painting
+      </div>
+
+      <div class="request__nav__container">
+        <div class="request__tab__box">
+            <ul>
+              <li class="request__tab">REQUESTS</li>
+              <li class="request__tab">PEOPLE</li>
+            </ul>
+            <div class="square"></div>
+        </div>
+
+        <div class="request__content__box">
+          <div class="request__content">
+            <ul>
+              <li th:each="card : ${cards}">
+                <a class="post_link" th:href="@{/post/{id}(id=${card.getServiceId()})}" target="_blank"><img class="request__card__pic" th:src="${card.getImageUrl()}" src="/img/Painting.webp" alt=""></a>
+                <div class="request__card__content">
+                  <div class="card__title" th:text="${card.getServiceTitle()}"></div>
+                  <div class="card__tag__box">
+                    <div class="card__tag" th:text="${card.getSkill1()?: ''}" th:class="${card.getSkill1() == null ? 'hidden' : 'card__tag'}"></div>
+                    <div class="card__tag" th:text="${card.getSkill2() != null and #strings.trim(card.getSkill2()) != '' ? card.getSkill2() : ''}" th:class="${card.getSkill2() == null or #strings.trim(card.getSkill2()) == '' ? 'hidden' : 'card__tag'}"></div>
+                    <div class="card__tag" th:text="${card.getSkill3() != null and #strings.trim(card.getSkill3()) != '' ? card.getSkill3() : ''}" th:class="${card.getSkill3() == null or #strings.trim(card.getSkill3()) == '' ? 'hidden' : 'card__tag'}"></div>
+                  </div>
+
+                  <div class="request__user">
+
+                    <img class="request__user__pic" th:src="${card.getPosterImageUrl()}" src="/img/man.jpg" alt="">
+
+                    <div class="request__user__name" th:text="${card.getPosterFirstName() + ' ' + card.getPosterLastName()}">Matteo Grasso</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- People Area -->
+        
+        <div class="request__content__box">
+          <div class="request__content">
+            <div class=""></div>
+            <ul class="people__tab">
+              <li th:each="user : ${users}">
+                <input type="number" class="hidden" name="talentId" th:value="${user.getUserId()}">
+                <input type="number" class="hidden" name="userId" th:value="${session.loginUser.getUserId()}">
+                <img class="people__card__saved-icon" src="/img/heart.png" th:src="${user.isSavedTalent()? '/img/heart-filled.png' : '/img/heart.png'}" alt="">
+                <a th:href="@{/user/expert/{id}(id=${user.getUserId()})}"  target="_blank"><img class="people__card__pic" th:src="${user.getImageUrl()}" src="/img/photo-1592334873219-42ca023e48ce.avif" alt=""></a>
+                <div class="people__card__name" th:text="${user.getFirstName() + ' ' + user.getLastName()}">Matteo Grasso</div>
+                <div class="people__level__area">
+                  <img src="/img/diamond.png" th:class="${user.getTrustScore() >= 90 ? '' : 'hidden'}" alt="">
+                  <div class="people__level" th:text="${user.getTrustScore() >= 90 ? 'Top Rated' : ''}" style="height: 20px">Top Rated</div>
+                </div>
+                <div class="people__info">
+                  <div class="people__trusted__score">
+                    <div class="score" th:text="${user.getTrustScore()}">96</div>
+                    <div>Score</div>
+                  </div>
+                  <div class="people__jobs">
+                    <div class="jobs" th:text="${user.getWork_done()}">21</div>
+                    Jobs
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer__display__area">
+          <div class="footer__follow__link">Follow us on: 
+            <a href=""><i class="fa fa-instagram"></i></a>
+            <i>|</i>
+            <a href=""><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+            <i>|</i>
+            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+          </div>
+          <div class="footer__info">
+            <div class="footer__info__discover">Discover
+              <ul>
+                <li><a href="">Become a Tasker</a></li>
+                <li><a href="">Service By City</a></li>
+                <li><a href="">All Services</a></li>
+                <li><a href="">Elite Taskers</a></li>
+                <li><a href="">Help</a></li>
+              </ul>
+            </div>
+            <div class="footer__info__company">Company
+              <ul>
+                <li><a href="">About Us</a></li>
+                <li><a href="">Careers</a></li>
+                <li><a href="">Press</a></li>
+                <li><a href="">Beyond Currency for Good</a></li>
+                <li><a href="">Blog</a></li>
+                <li><a href="">Terms & Privacy</a></li>
+                <li><a href="">About Our Ads</a></li>
+              </ul>
+            </div>
+            <div class="footer__info__download">Apps coming soon
+              <p>Sorry for your inconvenience, our apps<br>are developing.</p>
+              <div class="ios__google__badge">
+                <a href="">
+                  <img src="/svg/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="">
+                </a>
+                <a href="">
+                  <img id="google__badge" src="/img/google-play-badge.png" alt="">
+                </a>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="/js/base.js"></script>
+    <script> 
+      document.addEventListener('DOMContentLoaded', function () {
+          let firstTab = document.querySelector('.request__tab');
+          firstTab.click();
+        });
+  
+        const tabs = document.querySelectorAll('.request__tab');
+        const all_content = document.querySelectorAll('.request__content');
+  
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', (e) => {
+            // Use closest to find the closest ancestor with the class .tab_btn
+            const clickedTab = e.target.closest('.request__tab');
+            if (!clickedTab) return; // Do nothing if not clicking on .tab_btn
+  
+            tabs.forEach((tab) => {
+              tab.classList.remove('active');
+            });
+            clickedTab.classList.add('active');
+  
+            let line = document.querySelector('.square');
+            line.style.left = (clickedTab.offsetLeft + 58) + 'px';
+  
+            all_content.forEach((content) => {
+              content.classList.remove('active');
+            });
+            all_content[index].classList.add('active');
+          });
+        });
+
+      //toggle like image
+      $(document).ready(function() {
+        $(".people__card__saved-icon").on("click", function(e) {
+          let $closestLi = $(this).closest("li");
+          let userId = $closestLi.find('input[name="userId"]').val();
+          let savedTalentId = $closestLi.find('input[name="talentId"]').val();
+
+          if ($(this).attr("src").includes("/img/heart.png")) {
+            $.ajax({
+              type: "POST",
+              url: "/addSavedTalent",
+              data: {
+                userId: userId,
+                savedTalentId: savedTalentId,
+              },
+              success: function() {
+                $(e.target).attr("src", "/img/heart-filled.png");
+              },
+              error: function(xhr, status, error) {
+                console.error("Error:", error);
+              },
+            });
+          } else {
+            $.ajax({
+              type: "POST",
+              url: "/deleteSavedTalent",
+              data: {
+                userId: userId,
+                savedTalentId: savedTalentId,
+              },
+              success: function() {
+                $(e.target).attr("src", "/img/heart.png");
+              },
+              error: function(xhr, status, error) {
+                console.error("Error:", error);
+              },
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
