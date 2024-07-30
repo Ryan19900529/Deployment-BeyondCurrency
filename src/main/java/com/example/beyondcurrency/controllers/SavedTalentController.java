@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-@CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
+@CrossOrigin(origins = "http://beyondcurrency-deployment-production.up.railway.app")
 @Controller
 public class SavedTalentController {
     @Resource
@@ -28,7 +28,7 @@ public class SavedTalentController {
     @Resource
     UserLoginRegistrationRepository userLoginRegistrationRepository;
 
-    @CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
+    @CrossOrigin(origins = "http://beyondcurrency-deployment-production.up.railway.app")
     @PostMapping("/addSavedTalent")
     public String addSavedTalent(@RequestParam("savedTalentId") int talentId, @RequestParam("userId") int userId){
         SavedTalentModel savedTalent = new SavedTalentModel();
