@@ -26,7 +26,7 @@ bell.addEventListener("click", function () {
     // set isNewNotification to false
     $.ajax({
         type: "POST",
-        url: "/setNotificationNotNew",
+        url: "https://beyondcurrency-deployment-production.up.railway.app/setNotificationNotNew",
         data: {
             loginUserId: $('input[name="loginUserId"]').val()
         },
@@ -45,7 +45,7 @@ $('.close-notification').click(function () {
 
     $.ajax({
         type: "POST",
-        url: "/notificationNotShow",
+        url: "https://beyondcurrency-deployment-production.up.railway.app/notificationNotShow",
         data: {
             notificationId: notificationId,
         },

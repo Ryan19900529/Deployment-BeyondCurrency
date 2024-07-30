@@ -62,7 +62,7 @@
    // set isNewNotification to false
    $.ajax({
      type: "POST",
-     url: "/setNotificationNotNew",
+     url: "https://beyondcurrency-deployment-production.up.railway.app/setNotificationNotNew",
      data: {
        loginUserId: $('input[name="loginUserId"]').val()
      },
@@ -81,7 +81,7 @@
 
    $.ajax({
      type: "POST",
-     url: "/notificationNotShow",
+     url: "https://beyondcurrency-deployment-production.up.railway.app/notificationNotShow",
      data: {
        notificationId: notificationId,
      },
@@ -116,11 +116,10 @@
      let $closestLi = $(this).closest("li");
      let userId = $closestLi.find('input[name="userId"]').val();
      let savedTalentId = $closestLi.find('input[name="talentId"]').val();
-
      if ($(this).attr("src").includes("/img/heart.png")) {
        $.ajax({
          type: "POST",
-         url: "/addSavedTalent",
+         url: "https://beyondcurrency-deployment-production.up.railway.app/addSavedTalent",
          data: {
            userId: userId,
            savedTalentId: savedTalentId,
@@ -135,7 +134,7 @@
      } else {
        $.ajax({
          type: "POST",
-         url: "/deleteSavedTalent",
+         url: "https://beyondcurrency-deployment-production.up.railway.app/deleteSavedTalent",
          data: {
            userId: userId,
            savedTalentId: savedTalentId,
@@ -149,4 +148,5 @@
        });
      }
    });
+
  });

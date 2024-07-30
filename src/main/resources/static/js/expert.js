@@ -46,7 +46,7 @@ $(document).ready(function() {
     if ($(this).attr("src").includes("/img/love-circled.png")) {
       $.ajax({
         type: "POST",
-        url: "/addSavedTalent",
+        url: "https://beyondcurrency-deployment-production.up.railway.app/addSavedTalent",
         data: {
           userId: userId,
           savedTalentId: savedTalentId,
@@ -61,7 +61,7 @@ $(document).ready(function() {
     } else {
       $.ajax({
         type: "POST",
-        url: "/deleteSavedTalent",
+        url: "https://beyondcurrency-deployment-production.up.railway.app/deleteSavedTalent",
         data: {
           userId: userId,
           savedTalentId: savedTalentId,
