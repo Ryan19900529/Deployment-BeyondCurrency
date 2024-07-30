@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Controller
 public class SavedTalentController {
     @Resource
@@ -28,8 +27,8 @@ public class SavedTalentController {
     @Resource
     UserLoginRegistrationRepository userLoginRegistrationRepository;
 
-    @CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
-    @PostMapping("https://beyondcurrency-deployment-production.up.railway.app/addSavedTalent")
+//    @CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
+    @PostMapping("/addSavedTalent")
     public String addSavedTalent(@RequestParam("savedTalentId") int talentId, @RequestParam("userId") int userId){
         SavedTalentModel savedTalent = new SavedTalentModel();
         savedTalent.setUserId(userId);
@@ -38,7 +37,7 @@ public class SavedTalentController {
         return "redirect:/";
     }
 
-    @PostMapping("https://beyondcurrency-deployment-production.up.railway.app/deleteSavedTalent")
+    @PostMapping("/deleteSavedTalent")
     public String deleteSavedTalent(@RequestParam("savedTalentId") int talentId, @RequestParam("userId") int userId) {
         savedTalentRepository.deleteSavedTalent(talentId,userId);
         return "redirect:/";
