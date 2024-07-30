@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
 public class SavedTalentController {
     @Resource
     SavedTalentRepository savedTalentRepository;
@@ -26,6 +28,7 @@ public class SavedTalentController {
     NotificationRepository notificationRepository;
     @Resource
     UserLoginRegistrationRepository userLoginRegistrationRepository;
+
     @PostMapping("/addSavedTalent")
     public String addSavedTalent(@RequestParam("savedTalentId") int talentId, @RequestParam("userId") int userId){
         SavedTalentModel savedTalent = new SavedTalentModel();
