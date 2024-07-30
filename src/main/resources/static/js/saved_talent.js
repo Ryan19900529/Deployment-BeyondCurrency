@@ -119,7 +119,7 @@
      if ($(this).attr("src").includes("/img/heart.png")) {
        $.ajax({
          type: "POST",
-         url: "http://beyondcurrency-deployment-production.up.railway.app/addSavedTalent",
+         url: "https://beyondcurrency-deployment-production.up.railway.app/addSavedTalent",
          data: {
            userId: userId,
            savedTalentId: savedTalentId,
@@ -134,7 +134,7 @@
      } else {
        $.ajax({
          type: "POST",
-         url: "http://beyondcurrency-deployment-production.up.railway.app/deleteSavedTalent",
+         url: "https://beyondcurrency-deployment-production.up.railway.app/deleteSavedTalent",
          data: {
            userId: userId,
            savedTalentId: savedTalentId,
