@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
 public class SavedTalentController {
     @Resource
     SavedTalentRepository savedTalentRepository;
@@ -28,7 +27,6 @@ public class SavedTalentController {
     NotificationRepository notificationRepository;
     @Resource
     UserLoginRegistrationRepository userLoginRegistrationRepository;
-    @CrossOrigin(origins = "https://beyondcurrency-deployment-production.up.railway.app")
 
     @PostMapping("/addSavedTalent")
     public String addSavedTalent(@RequestParam("savedTalentId") int talentId, @RequestParam("userId") int userId){
